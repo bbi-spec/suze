@@ -13,21 +13,23 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4  # Updated to v4
+      uses: actions/checkout@v4
 
     - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v2 # Updated to v2 (stable)
+      uses: microsoft/setup-msbuild@v2
 
     - name: Restore NuGet packages
       run: nuget restore sunone_aimbot_cpp.sln
 
     - name: Build Solution
-      run: msbuild sunone_aimbot_cpp.sln /p:Configuration=Release
+      # [FIX] Use "Mixed Platforms" which is the standard default for C++ Solutions
+      run: msbuild sunone_aimbot_cpp.sln /p:Configuration=Release /p:Platform="Mixed Platforms"
 
     - name: Upload EXE as Artifact
-      uses: actions/upload-artifact@v4  # <--- THE FIX (v3 is dead)
+      uses: actions/upload-artifact@v4
       with:
         name: SunOne-Bot-Build
-        path: x64/Release/*.exe
-        # v4 requires distinct names if you upload multiple times, 
-        # but for a single build, this is fine.
+        # We look in both potential output locations just in case
+        path: |
+          x64/Release/*.exe
+          Release/*.exe
