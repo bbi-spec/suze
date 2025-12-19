@@ -5,7 +5,7 @@ on:
     branches: [ "main", "master" ]
   pull_request:
     branches: [ "main", "master" ]
-  workflow_dispatch: # Allows you to run this manually
+  workflow_dispatch:
 
 jobs:
   build:
@@ -13,10 +13,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4  # Updated to v4
 
     - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.2
+      uses: microsoft/setup-msbuild@v2 # Updated to v2 (stable)
 
     - name: Restore NuGet packages
       run: nuget restore sunone_aimbot_cpp.sln
@@ -25,7 +25,9 @@ jobs:
       run: msbuild sunone_aimbot_cpp.sln /p:Configuration=Release /p:Platform=x64
 
     - name: Upload EXE as Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4  # <--- THE FIX (v3 is dead)
       with:
         name: SunOne-Bot-Build
         path: x64/Release/*.exe
+        # v4 requires distinct names if you upload multiple times, 
+        # but for a single build, this is fine.
