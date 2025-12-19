@@ -22,7 +22,7 @@ jobs:
       run: nuget restore sunone_aimbot_cpp.sln
 
     - name: Build Solution
-      run: msbuild sunone_aimbot_cpp.sln /p:Configuration=Release /p:Platform=x64
+      run: msbuild sunone_aimbot_cpp.sln /p:Configuration=Release
 
     - name: Upload EXE as Artifact
       uses: actions/upload-artifact@v4  # <--- THE FIX (v3 is dead)
