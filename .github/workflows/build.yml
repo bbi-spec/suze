@@ -1,0 +1,31 @@
+name: Build C++ Bot
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch: # Allows you to run this manually
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Restore NuGet packages
+      run: nuget restore sunone_aimbot_cpp.sln
+
+    - name: Build Solution
+      run: msbuild sunone_aimbot_cpp.sln /p:Configuration=Release /p:Platform=x64
+
+    - name: Upload EXE as Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: SunOne-Bot-Build
+        path: x64/Release/*.exe
