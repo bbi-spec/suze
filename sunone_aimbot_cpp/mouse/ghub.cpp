@@ -10,7 +10,7 @@
 
 // --- CONFIGURATION ---
 // [IMPORTANT] Change this to the IP of your Gaming PC (PC 2) running the Python script
-#define SERVER_IP "192.168.1.100" 
+#define SERVER_IP "192.168.3.59" 
 #define SERVER_PORT 5000
 
 // Internal variables for networking
